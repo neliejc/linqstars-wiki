@@ -15,7 +15,10 @@ and bundled PHP dependencies from the existing wiki hosting files.
 - The database and uploaded files in `images/` are managed separately. Wiki pages,
   accounts, and history live in the database and are not included in this repository.
 - Runtime caches and compiled widget templates are excluded.
-- Bundled dependencies are retained to preserve the uploaded source snapshot.
+- Root bundled dependencies are retained. Extension-level ignore rules exclude
+  some dependencies, including GoogleLogin and Widgets vendor directories.
+  Install those dependencies from their Composer manifests/lockfiles when
+  preparing deployment; a fresh clone is not yet a complete runnable server.
 
 ## Deployment
 
