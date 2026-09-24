@@ -1,0 +1,33 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bjankuloski06"
+		]
+	},
+	"pageapprovals-description": "Контрола на квалитетот за вашето вики. Одобрувајте страници, доделувајте одобрувачи на категории, прегледувајте ги барањата за одобрување и гледајте го статусот на одобреност на страниците.",
+	"manageapprovers": "Управување со одобрувачи",
+	"pageapprovals-status-approved": "ОДОБРЕНО",
+	"pageapprovals-status-not-approved": "Неодобрено",
+	"pageapprovals-approve-page-text": "$1 ја одобри оваа страница $2",
+	"pageapprovals-approve-button": "Одобри страница",
+	"pageapprovals-unapprove-button": "Неодобри страница",
+	"right-manage-approvers": "Управување со одобрувачи",
+	"action-manage-approvers": "управување со одобрувачи",
+	"pageapprovals-approved": "Страницата е одобрена",
+	"pageapprovals-unapproved": "Страницата е неодобрена",
+	"pageapprovals-approve-authorization-failed": "Одобрувањето не успеа. Не сте овластени да ја одобрите оваа страница.",
+	"pageapprovals-unapprove-authorization-failed": "Неодобрувањето не успеа. Не сте овластени да ја неодобрите оваа страница.",
+	"pageapprovals-approve-invalid-page": "Одобрувањето не успеа. Оваа страница не постои.",
+	"pageapprovals-unapprove-invalid-page": "Одобрувањето не успеа. Оваа страница не постои.",
+	"pageapprovals-approve-outdated-revision": "Одобрувањето не успеа. Можете да одобрите само најнова верзија на страница.",
+	"pageapprovals-unapprove-outdated-revision": "Неодобрувањето не успеа. Можете да неодобрите само најнова верзија на страница.",
+	"pendingapprovals": "Одобренија на чекање",
+	"pageapprovals-pending-approvals-page": "Страница",
+	"pageapprovals-pending-approvals-categories": "Совпаднати категории",
+	"pageapprovals-pending-approvals-last-edit-time": "Последно уредување:",
+	"pageapprovals-pending-approvals-last-edit-by": "Последен уредувач",
+	"pageapprovals-no-categories": "Не сте овластени како одобрувач на категории.",
+	"pageapprovals-no-pending-approvals": "Немате одобенија на чекање.",
+	"pageapprovals-pending-approval-count": "Имате $1 {{PLURAL:$1|одобрување|одобрувања}} на чекање.",
+	"pageapprovals-not-logged-in": "Најавете се за да ги видите одобрувањата во исчекување."
+}

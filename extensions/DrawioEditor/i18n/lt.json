@@ -1,0 +1,13 @@
+{
+	"@metadata": {
+		"authors": [
+			"Nokeoo"
+		]
+	},
+	"drawioeditor-ve-drawio-title": "Draw.io diagrama",
+	"drawioeditor-ve-drawio-tag-name": "Pavadinimas",
+	"drawioeditor-ve-drawio-tag-name-help": "Diagramos, talpinamos viki, pavadinimas",
+	"drawioeditor-ve-drawio-tag-name-placeholder": "Diagrama-1",
+	"drawioeditor-droplet-name": "Diagrama",
+	"drawioeditor-droplet-description": "Redaguojama draw.io diagrama"
+}

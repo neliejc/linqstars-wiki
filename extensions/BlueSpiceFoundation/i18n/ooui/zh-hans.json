@@ -1,0 +1,36 @@
+{
+	"@metadata": {
+		"authors": [
+			"AYZ04",
+			"Gsdn",
+			"Liuxinyu970226",
+			"Peterxy12",
+			"VulpesVulpes825"
+		]
+	},
+	"bs-ooui-field-tagmultiselect-input-placeholder": "添加新的...",
+	"bs-ooui-key-value-input-widget-key-label": "密钥",
+	"bs-ooui-key-value-input-widget-value-label": "值",
+	"bs-ooui-key-value-input-widget-add-button-label": "添加",
+	"bs-ooui-key-value-input-widget-add-form-label": "添加新记录",
+	"bs-ooui-key-value-input-widget-error-message": "所有必填字段必须设置！",
+	"bs-ooui-key-value-input-widget-no-values-label": "未设置值！",
+	"bs-ooui-btn-dismiss-alert-title": "关闭",
+	"bs-ooui-key-value-input-widget-section-label": "章节",
+	"bs-ooui-key-value-input-widget-add-section-label": "新增章节",
+	"bs-ui-generic-save": "保存",
+	"bs-ui-generic-cancel": "取消",
+	"bs-ui-generic-yes": "是",
+	"bs-ui-generic-no": "否",
+	"bs-exportpages-dialog-title": "导出页面到收藏",
+	"bs-exportpages-success-text": "页面被导出到[[$1|$2]]",
+	"bs-ui-generic-close": "关闭",
+	"bs-pageexport-list-name-label": "清单名称",
+	"bs-pageexport-list-format-label": "清单格式",
+	"bs-pageexport-list-format-plain-label": "纯文本",
+	"bs-pageexport-list-format-link-label": "链接",
+	"bs-pageexport-overwrite-label": "覆盖",
+	"bs-export-search-summary-text": "生成自页面导出",
+	"bs-pagecollection-prefix": "页面收藏",
+	"bs-util-alert-title": "提示"
+}

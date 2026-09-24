@@ -1,0 +1,212 @@
+{
+	"name": "DrawioEditor",
+	"license-name": "GPL-3.0-only",
+	"version": "3.1.0-alpha",
+	"author": [
+		"Markus Gebert",
+		"[https://www.hallowelt.com Hallo Welt! GmbH]",
+		"Hamish Slater"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:DrawioEditor",
+	"attributes": {
+		"ContentDroplets": {
+			"Droplets": {
+				"drawio": {
+					"class": "\\MediaWiki\\Extension\\DrawioEditor\\ContentDroplets\\DrawioDroplet"
+				}
+			}
+		},
+		"DrawioEditor": {
+			"InspectorPluginModules": []
+		},
+		"PDFCreator": {
+			"StyleBlocksProvider": {
+				"DrawioEditorStyleBlock": {
+					"class": "MediaWiki\\Extension\\DrawioEditor\\Integration\\PDFCreator\\StyleBlockProvider\\StyleBlock"
+				}
+			}
+		},
+		"BlueSpiceInstanceStatus": {
+			"ApiInstanceStatusProvider": {
+				"ext-drawioeditor": {
+					"class": "\\MediaWiki\\Extension\\DrawioEditor\\Integration\\StatusCheckProvider",
+					"services": [ "MainConfig", "HttpRequestFactory" ]
+				}
+			}
+		},
+		"BlueSpiceFoundation": {
+			"ConfigDefinitionRegistry": {
+				"DrawioEditorBackendUrl": "\\MediaWiki\\Extension\\DrawioEditor\\ConfigDefinition\\BackendUrl::getInstance",
+				"DrawioEditorDefaultEditmode": "\\MediaWiki\\Extension\\DrawioEditor\\ConfigDefinition\\DefaultEditmode::getInstance"
+			}
+		},
+		"MWStakeContentProvisioner": {
+			"ContentManifests": {
+				"DefaultContentProvisioner": [
+					"extensions/DrawioEditor/data/Content/manifest.json"
+				]
+			}
+		}
+	},
+	"descriptionmsg": "drawioeditor-desc",
+	"type": "parserhook",
+	"requires": {
+		"MediaWiki": ">= 1.43.0"
+	},
+	"callback": "mwsInitComponents",
+	"ExtensionMessagesFiles": {
+		"DrawioEditorMagic": "DrawioEditor.magic.php"
+	},
+	"ExtensionFunctions": [
+		"MediaWiki\\Extension\\DrawioEditor\\RegisterVisualEditorPlugins::execute"
+	],
+	"MessagesDirs": {
+		"DrawioEditor": [
+			"i18n"
+		]
+	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\DrawioEditor\\": "src/"
+	},
+	"APIModules": {
+		"drawioeditor-save-diagram": {
+			"class": "MediaWiki\\Extension\\DrawioEditor\\Api\\SaveDrawioDiagram",
+			"services": [ "RepoGroup", "MimeAnalyzer" ]
+		}
+	},
+	"ResourceModules": {
+		"ext.drawioeditor.styles": {
+			"styles": "ext.drawioeditor.css"
+		},
+		"ext.drawioeditor": {
+			"packageFiles": [
+				"ext.drawioeditor.js"
+			],
+			"dependencies": [
+				"jquery.ui",
+				"mediawiki.api",
+				"oojs-ui"
+			],
+			"messages": [
+				"drawioeditor-approved-editwarning",
+				"drawioeditor-approved-displaywarning",
+				"drawioeditor-noapproved",
+				"drawioeditor-approve-link",
+				"drawioeditor-changeapprove-link"
+			]
+		},
+		"ext.drawioconnector.visualEditor.bootstrap": {
+			"packageFiles": [
+				"ext.drawioconnector.visualEditor.bootstrap.js",
+				{
+					"name": "pluginModules.json",
+					"callback": "MediaWiki\\Extension\\DrawioEditor\\DrawioInspectorPluginModules::getPluginModules"
+				}
+			]
+		},
+		"ext.drawioconnector.visualEditor": {
+			"styles": [
+				"ext.drawio.droplet.css"
+			],
+			"messages": [
+				"drawioeditor-tag-title",
+				"drawioeditor-ve-drawio-title",
+				"drawioeditor-ve-drawio-tag-name",
+				"drawioeditor-ve-drawio-tag-name-help",
+				"drawioeditor-usage",
+				"drawioeditor-droplet-name",
+				"drawioeditor-droplet-description",
+				"drawioeditor-ve-drawio-alt-label",
+				"drawioeditor-ve-drawio-alt-help",
+				"drawioeditor-ve-drawio-alignment-label",
+				"drawioeditor-ve-drawio-alignment-help",
+				"drawioeditor-details"
+			]
+		},
+		"ext.drawio.tag.definition": {
+			"scripts": [
+				"FilenameProcessor.js",
+				"ext.drawio.tag.definition.js"
+			],
+			"messages": [
+				"drawioeditor-ve-drawio-tag-name-placeholder"
+			],
+			"dependencies": [
+				"ext.drawio.tag.bootstrap",
+				"ext.visualEditorPlus.tags.definition",
+				"ext.drawio.tag.form"
+			]
+		},
+		"ext.drawio.tag.form": {
+			"scripts": [
+				"FilenameProcessor.js",
+				"ext.drawio.tag.form.js"
+			],
+			"messages": [
+				"drawioeditor-ve-drawio-tag-name",
+				"drawioeditor-ve-drawio-tag-name-help",
+				"drawioeditor-ve-drawio-editmode-label-inline",
+				"drawioeditor-ve-drawio-editmode-label-fullscreen",
+				"drawioeditor-ve-drawio-editmode-label",
+				"drawioeditor-ve-drawio-editmode-help",
+				"drawioeditor-ve-drawio-alt-label",
+				"drawioeditor-ve-drawio-alt-help",
+				"drawioeditor-ve-drawio-alignment-label-center",
+				"drawioeditor-ve-drawio-alignment-label-left",
+				"drawioeditor-ve-drawio-alignment-label-right",
+				"drawioeditor-ve-drawio-alignment-label",
+				"drawioeditor-ve-drawio-alignment-help"
+			],
+			"dependencies": [
+				"ext.forms.formelements.bootstrap",
+				"ext.forms.standalone",
+				"ext.drawio.tag.bootstrap"
+			]
+		},
+		"ext.drawio.tag.bootstrap": {
+			"scripts": [
+				"ext.drawio.tag.bootstrap.js"
+			]
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "resources",
+		"remoteExtPath": "DrawioEditor/resources"
+	},
+	"Hooks": {
+		"DrawioGetFile": "approveRevsSetStableFile",
+		"ImagePageAfterImageLinks": "hooks",
+		"MWStakeGenericTagHandlerInitTags": "registerTags",
+		"ParserFirstCallInit": "registerLegacyParserFunction"
+	},
+	"HookHandlers": {
+		"approveRevsSetStableFile": {
+			"class": "MediaWiki\\Extension\\DrawioEditor\\Hook\\ApprovedRevsSetStableFile",
+			"services": [ "DBLoadBalancer", "RepoGroup" ]
+		},
+		"hooks": {
+			"class": "\\MediaWiki\\Extension\\DrawioEditor\\Hooks"
+		},
+		"registerTags": {
+			"class": "MediaWiki\\Extension\\DrawioEditor\\Hook\\RegisterTags",
+			"services": [ "MainConfig" ]
+		},
+		"registerLegacyParserFunction": {
+			"class": "MediaWiki\\Extension\\DrawioEditor\\Hook\\RegisterLegacyParserFunction"
+		}
+	},
+	"config": {
+		"DrawioEditorImageType": {
+			"value": "png",
+			"description": "Supported values: png, svg"
+		},
+		"DrawioEditorBackendUrl": {
+			"value": "https://embed.diagrams.net"
+		},
+		"DrawioEditorDefaultEditmode": {
+			"value": "inline",
+			"description": "Supported values: inline, fullscreen"
+		}
+	},
+	"manifest_version": 2
+}

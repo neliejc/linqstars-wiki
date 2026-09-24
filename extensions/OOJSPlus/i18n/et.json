@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kareyac",
+			"Rivoz"
+		]
+	},
+	"oojsplus-dialog-action-add": "Lisa",
+	"oojsplus-data-grid-filter-date-operator-eq-label": "Sellel päeval",
+	"oojsplus-data-grid-filter-date-operator-lt-label": "Enne seda päeva"
+}

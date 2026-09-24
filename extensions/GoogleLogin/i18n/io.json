@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"JSantos",
+			"Joao Xavier"
+		]
+	},
+	"googlelogin-manage-yes": "yes",
+	"googlelogin-manage-no": "no",
+	"googlelogin-manage-dismiss": "Celez",
+	"googlelogin-username": "Uzero-nomo",
+	"googlelogin-alloweddomain-terminatebutton": "Efacar",
+	"echo-category-title-change-googlelogin": "Modifikuri en la konto Google konektita",
+	"echo-pref-tooltip-change-googlelogin": "Informez me kande ula administranto di GoogleLogin modifikar mea konti Google konektita."
+}

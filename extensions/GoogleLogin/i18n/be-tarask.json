@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ucukor"
+		]
+	},
+	"googlelogin-manage-errorloading": "Памылка ладаваньня",
+	"googlelogin-auth-service-unknown-account": "Невядомы рахунак Google"
+}

@@ -1,0 +1,99 @@
+<div class="manage-approvers">
+	<div class="form-container">
+		<form method="POST" action="" class="add-approver-form">
+			<input type="text" name="username" placeholder="Username" required>
+			<button class="add-approver-button" type="submit" name="action" value="add-approver">Add Approver</button>
+		</form>
+	</div>
+
+	<table class="form-container" id="categories-form-container">
+		<thead>
+		<tr>
+			<th>User</th>
+			<th>Categories</th>
+		</tr>
+		</thead>
+		<tbody>
+		{{#approvers}}
+			<tr>
+				<td>{{username}}</td>
+				<td>
+					{{#categories}}
+						<div class="category-entry">
+							<span class="category-name">{{.}}</span>
+							<form method="POST" action="" class="category-row">
+								<input type="hidden" name="username" value="{{username}}">
+								<input type="hidden" name="category" value="{{.}}">
+								<button class="approval-delete-btn" type="submit" name="action" value="delete">Delete
+								</button>
+							</form>
+						</div>
+					{{/categories}}
+					<form method="POST" class="add-category-form">
+						<input type="text" name="category" placeholder="New Category" id="{{username}}category" required>
+						<input type="hidden" name="username" value="{{username}}">
+						<input type="hidden" name="action" value="add">
+						<button class="add-button" type="submit" value="add">Add</button>
+					</form>
+				</td>
+			</tr>
+		{{/approvers}}
+		</tbody>
+	</table>
+</div>
+
+<script>
+	const CATEGORIES_FORM_CONTAINER_ID = 'categories-form-container';
+
+	const handleCategorySubmit = ( event ) => {
+		event.preventDefault();
+		const form = event.target;
+
+		if( !form.checkValidity() ) {
+			form.reportValidity();
+			return;
+		}
+
+		const { username } = form.elements;
+
+		fetch( window.location.href, {
+			method: 'POST',
+			body: new FormData( form )
+		} ).then( ( response ) => response.text() )
+			.then( ( html ) => {
+				const newDoc = new DOMParser().parseFromString( html, 'text/html' );
+				const container = document.getElementById( CATEGORIES_FORM_CONTAINER_ID );
+				const newContainer = newDoc.getElementById( CATEGORIES_FORM_CONTAINER_ID );
+
+				if( container && newContainer ) {
+					container.replaceWith( newContainer );
+
+					const inputField = document.getElementById( `${ username.value }category` );
+					if( inputField ) {
+						inputField.focus();
+					}
+					addEventListeners();
+				}
+			} )
+			.catch( ( error ) => {
+				console.error( 'Error:', error );
+			} );
+	};
+
+	const addEventListeners = () => {
+		const container = document.getElementById( CATEGORIES_FORM_CONTAINER_ID );
+		if( container ) {
+			container.addEventListener( 'submit', ( event ) => {
+				if( event.target.classList.contains( 'add-category-form' ) ) {
+					handleCategorySubmit( event );
+				}
+			} );
+		}
+	};
+
+	if( window.history.replaceState ) {
+		window.history.replaceState( null, null, window.location.href );
+	}
+
+	addEventListeners();
+</script>

@@ -1,0 +1,34 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jeroen De Dauw",
+			"Morne Alberts"
+		]
+	},
+	"pageapprovals-description": "Quality control for your wiki. Approve pages, assign approvers to categories, view your approval requests, and see the approval status of pages.",
+	"manageapprovers": "Manage approvers",
+	"pageapprovals-status-approved": "Approved",
+	"pageapprovals-status-not-approved": "Not approved",
+	"pageapprovals-approve-page-text": "$1 approved this page $2 at $3",
+	"pageapprovals-approve-button": "Approve page",
+	"pageapprovals-unapprove-button": "Unapprove page",
+	"right-manage-approvers": "Manage approvers",
+	"action-manage-approvers": "manage approvers",
+	"pageapprovals-approved": "Page approved",
+	"pageapprovals-unapproved": "Page unapproved",
+	"pageapprovals-approve-authorization-failed": "Approval failed. You are not authorized to approve this page.",
+	"pageapprovals-unapprove-authorization-failed": "Unapproval failed. You are not authorized to unapprove this page.",
+	"pageapprovals-approve-invalid-page": "Approval failed. This page does not exist.",
+	"pageapprovals-unapprove-invalid-page": "Unapproval failed. This page does not exist.",
+	"pageapprovals-approve-outdated-revision": "Approval failed. You can only approve the latest version of a page.",
+	"pageapprovals-unapprove-outdated-revision": "Unapproval failed. You can only unapprove the latest version of a page.",
+	"pendingapprovals": "Pending approvals",
+	"pageapprovals-pending-approvals-page": "Page",
+	"pageapprovals-pending-approvals-categories": "Matching Categories",
+	"pageapprovals-pending-approvals-last-edit-time": "Last Edited On",
+	"pageapprovals-pending-approvals-last-edit-by": "Latest Editor",
+	"pageapprovals-no-categories": "You are not assigned as approver for any categories.",
+	"pageapprovals-no-pending-approvals": "You have no pending approvals.",
+	"pageapprovals-pending-approval-count": "You have $1 pending {{PLURAL:$1|approval|approvals}}.",
+	"pageapprovals-not-logged-in": "Log in to view your pending approvals."
+}

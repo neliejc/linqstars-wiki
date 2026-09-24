@@ -1,0 +1,23 @@
+# Server-specific configuration and credentials
+/LocalSettings.php
+.env
+.env.*
+!.env.example
+auth.json
+
+# Uploaded wiki content and runtime caches
+/images/**
+!/images/.htaccess
+/cache/**
+!/cache/.htaccess
+/extensions/Widgets/compiled_templates/**
+
+# Local tooling and temporary files
+.DS_Store
+._*
+node_modules/
+*.log
+*.bak
+*.swp
+*.sql.gz
+*.sql.bz2

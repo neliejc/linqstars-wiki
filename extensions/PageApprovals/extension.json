@@ -1,0 +1,141 @@
+{
+	"name": "Page Approvals",
+
+	"version": "2.1.1",
+
+	"author": [
+		"[https://Professional.Wiki/ Professional Wiki]"
+	],
+
+	"license-name": "BSD-3-Clause",
+
+	"url": "https://professional.wiki/en/extension/page-approvals",
+
+	"descriptionmsg": "pageapprovals-description",
+
+	"requires": {
+		"MediaWiki": ">= 1.43.0"
+	},
+
+	"MessagesDirs": {
+		"PageApprovals": [
+			"i18n"
+		]
+	},
+
+	"AutoloadNamespaces": {
+		"ProfessionalWiki\\PageApprovals\\": "src/",
+		"ProfessionalWiki\\PageApprovals\\Tests\\": "tests/"
+	},
+
+	"SpecialPages": {
+		"ManageApprovers": {
+			"class": "ProfessionalWiki\\PageApprovals\\EntryPoints\\Specials\\SpecialManageApprovers",
+			"factory": "ProfessionalWiki\\PageApprovals\\PageApprovals::newSpecialManageApprovers"
+		},
+		"PendingApprovals": {
+			"class": "ProfessionalWiki\\PageApprovals\\EntryPoints\\Specials\\SpecialPendingApprovals",
+			"factory": "ProfessionalWiki\\PageApprovals\\PageApprovals::newSpecialPendingApprovals"
+		}
+	},
+
+	"ExtensionMessagesFiles": {
+		"PageApprovalsAlias": "i18n/Aliases/Aliases.php"
+	},
+
+	"AvailableRights": [
+		"manage-approvers"
+	],
+	"GroupPermissions": {
+		"*": {
+			"manage-approvers": false
+		},
+		"sysop": {
+			"manage-approvers": true
+		}
+	},
+
+	"Hooks": {
+		"OutputPageParserOutput": "ProfessionalWiki\\PageApprovals\\EntryPoints\\PageApprovalsHooks::onOutputPageParserOutput",
+		"LoadExtensionSchemaUpdates": "ProfessionalWiki\\PageApprovals\\EntryPoints\\PageApprovalsHooks::onLoadExtensionSchemaUpdates",
+		"OutputPageBeforeHTML": "ProfessionalWiki\\PageApprovals\\EntryPoints\\PageApprovalsHooks::onOutputPageBeforeHTML",
+		"AdminLinks": "ProfessionalWiki\\PageApprovals\\EntryPoints\\PageApprovalsHooks::onAdminLinks"
+	},
+
+	"config": {
+	},
+
+	"ResourceFileModulePaths": {
+		"localBasePath": "resources",
+		"remoteExtPath": "PageApprovals/resources"
+	},
+
+	"ResourceModules": {
+		"ext.pageApprovals": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"packageFiles": [
+				"ext.pageApprovals/init.js",
+				"ext.pageApprovals/utils/api.js",
+				"ext.pageApprovals/utils/time.js",
+				"ext.pageApprovals/components/App.vue",
+				"ext.pageApprovals/components/ApprovalButton.vue",
+				"ext.pageApprovals/components/StatusDisplay.vue",
+				{
+					"name": "ext.pageApprovals/icons.json",
+					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
+					"callbackParam": [
+						"cdxIconCollapse",
+						"cdxIconExpand",
+						"cdxIconCheck",
+						"cdxIconClose"
+					]
+				}
+			],
+			"skinStyles": {
+				"vector-2022": [
+					"ext.pageApprovals/styles/ext.pageApprovals.vector-2022.less"
+				]
+			},
+			"codexComponents": [
+				"CdxMenuButton",
+				"CdxIcon",
+				"CdxInfoChip",
+				"CdxTooltip"
+			],
+			"dependencies": [
+				"vue",
+				"mediawiki.api",
+				"mediawiki.notification"
+			],
+			"messages": [
+				"pageapprovals-status-approved",
+				"pageapprovals-status-not-approved",
+				"pageapprovals-approve-page-text",
+				"pageapprovals-approve-button",
+				"pageapprovals-unapprove-button",
+				"pageapprovals-approved",
+				"pageapprovals-unapproved"
+			]
+		},
+		"ext.pageApprovals.manageApprovers.styles": {
+			"styles": [
+				"ManageApprovers.css"
+			]
+		}
+	},
+
+	"RestRoutes": [
+		{
+			"path": "/page-approvals/v0/revision/{revisionId}/approve",
+			"method": [ "POST" ],
+			"factory": "ProfessionalWiki\\PageApprovals\\PageApprovals::newApprovePageApi"
+		},
+		{
+			"path": "/page-approvals/v0/revision/{revisionId}/unapprove",
+			"method": [ "POST" ],
+			"factory": "ProfessionalWiki\\PageApprovals\\PageApprovals::newUnapprovePageApi"
+		}
+	],
+
+	"manifest_version": 2
+}
