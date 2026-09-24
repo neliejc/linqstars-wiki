@@ -29,3 +29,20 @@ Future deployments must preserve `LocalSettings.php` and uploaded files.
 
 Google OAuth must allow the production wiki callback URL. Review the example
 configuration before using it on a new server.
+
+## Reduced deployment size
+
+GoogleLogin's Composer configuration retains only the `Oauth2` service wrapper.
+The Google client, authentication library, and their dependencies remain installed.
+Run `composer install --no-dev` inside `extensions/GoogleLogin` when preparing a
+deployment; its `pre-autoload-dump` hook removes unused Google service wrappers.
+If another Google API is needed later, add its service to the Composer allowlist
+and reinstall `google/apiclient-services` to restore the missing wrappers.
+
+Extensions retained from the current configuration: BlueSpiceFoundation,
+DrawioEditor, GoogleLogin, InputBox, OOJSPlus, PageApprovals, VisualEditor, Widgets,
+and WikiEditor. Their declared extension dependencies are included.
+Inactive extensions removed: CiteThisPage, CodeEditor, Echo, ImageMap, Linter,
+MultimediaViewer, NativeSvgHandler, Nuke, OATHAuth, PageImages, PdfHandler,
+ReplaceText, SecureLinkFixer, SpamBlacklist, TextExtracts, and TitleBlacklist.
+Reinstall an extension before enabling it in the server configuration.

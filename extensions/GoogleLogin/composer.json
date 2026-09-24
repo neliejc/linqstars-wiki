@@ -23,11 +23,17 @@
 			"minus-x fix .",
 			"phpcbf"
 		],
-		"phpcs": "phpcs -sp --cache"
+		"phpcs": "phpcs -sp --cache",
+		"pre-autoload-dump": "Google\\Task\\Composer::cleanup"
 	},
 	"config": {
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
+	},
+	"extra": {
+		"google/apiclient-services": [
+			"Oauth2"
+		]
 	}
 }
