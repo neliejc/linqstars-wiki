@@ -7,3 +7,6 @@ vendor/**
 
 composer.lock
 composer.phar
+
+# Pin production dependency versions for GitHub deployment.
+!/composer.lock

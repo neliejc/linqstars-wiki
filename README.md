@@ -22,10 +22,12 @@ and bundled PHP dependencies from the existing wiki hosting files.
 
 ## Deployment
 
-No automated deployment is configured by this import. Pushing to GitHub does not
-publish the wiki. The server still needs PHP, the database, uploaded files,
-private configuration, writable runtime directories, DNS, and HTTPS configured.
-Future deployments must preserve `LocalSettings.php` and uploaded files.
+The GitHub Actions workflow in `.github/workflows/deploy.yml` deploys pushes to
+`main` through FTPS once hosting credentials and `DEPLOY_ENABLED=true` are set.
+See [deployment setup](docs/deployment.md) for the required secrets, variables,
+first-run preview, and initial cleanup of old server files. Deployment is disabled
+until configured. Live `LocalSettings.php`, uploaded files, and the database are
+preserved.
 
 Google OAuth must allow the production wiki callback URL. Review the example
 configuration before using it on a new server.

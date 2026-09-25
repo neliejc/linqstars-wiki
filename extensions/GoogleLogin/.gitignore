@@ -6,3 +6,6 @@ composer.lock
 publicSuffixArray.php
 /.eslintcache
 /.stylelintcache
+
+# Pin production dependency versions for GitHub deployment.
+!/composer.lock

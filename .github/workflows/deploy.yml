@@ -1,0 +1,96 @@
+name: Deploy wiki
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Preview file transfers without changing the server
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wiki-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # Enable after the destination and first deployment have been checked.
+    if: github.ref == 'refs/heads/main' && (vars.DEPLOY_ENABLED == 'true' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Check deployment settings
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_SERVER_DIR: ${{ vars.FTP_SERVER_DIR }}
+          PHP_VERSION: ${{ vars.DEPLOY_PHP_VERSION }}
+        run: |
+          for setting in FTP_SERVER FTP_USERNAME FTP_PASSWORD FTP_SERVER_DIR PHP_VERSION; do
+            if [ -z "${!setting}" ]; then
+              echo "::error::Missing setting: $setting"
+              exit 1
+            fi
+          done
+          if [[ "$FTP_SERVER_DIR" != */ ]]; then
+            echo '::error::FTP_SERVER_DIR must end in /'
+            exit 1
+          fi
+
+      - name: Set up PHP matching the live server
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ vars.DEPLOY_PHP_VERSION }}
+          extensions: calendar, ctype, curl, dom, fileinfo, gd, iconv, intl, mbstring, mysqli, xml
+          tools: composer:v2
+          coverage: none
+
+      - name: Build extension dependencies
+        run: bash scripts/build-deployment.sh
+
+      - name: Deploy through encrypted FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          security: strict
+          port: ${{ vars.FTP_PORT || '21' }}
+          local-dir: ./
+          server-dir: ${{ vars.FTP_SERVER_DIR }}
+          dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            LocalSettings.php
+            LocalSettings.example.php
+            images
+            images/**
+            cache
+            cache/**
+            extensions/Widgets/compiled_templates
+            extensions/Widgets/compiled_templates/**
+            **/.env*
+            **/auth.json
+            **/*.log
+            **/*.bak
+            scripts/**
+            docs/**
+            README.md
+
+      - name: Check live wiki
+        if: github.event_name != 'workflow_dispatch' || !inputs.dry_run
+        run: curl --fail --silent --show-error --location --retry 3 --max-time 60 --output /dev/null https://wiki.linqstars.com/
