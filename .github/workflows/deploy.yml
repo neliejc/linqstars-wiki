@@ -22,7 +22,7 @@ jobs:
     # Enable after the destination and first deployment have been checked.
     if: github.ref == 'refs/heads/main' && (vars.DEPLOY_ENABLED == 'true' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v6
         with:
@@ -58,8 +58,21 @@ jobs:
       - name: Build extension dependencies
         run: bash scripts/build-deployment.sh
 
+      - name: Prepare FTP client
+        uses: actions/checkout@v6
+        with:
+          repository: SamKirkland/FTP-Deploy-Action
+          ref: v4.4.0
+          path: .github/ftp-client
+          persist-credentials: false
+
+      - name: Avoid repeated directory traversal
+        run: |
+          python3 scripts/patch-ftp-client.py .github/ftp-client/dist/index.js
+          node scripts/tests/ftp-folders.cjs .github/ftp-client/dist/index.js
+
       - name: Deploy through encrypted FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        uses: ./.github/ftp-client
         env:
           # Hosting omits this public intermediate from its FTPS certificate chain.
           NODE_EXTRA_CA_CERTS: ${{ github.workspace }}/.github/certs/perfectssl.pem

@@ -74,3 +74,18 @@ again to redeploy the previous tracked code. Set `DEPLOY_ENABLED=false` to pause
 automatic deployment.
 
 Action reference: https://github.com/SamKirkland/FTP-Deploy-Action
+
+## FTP folder preparation
+
+The workflow checks out FTP-Deploy-Action v4.4.0 into the excluded `.github/`
+directory and applies `scripts/patch-ftp-client.py`. This patch checks an existing
+directory with one CWD operation and returns directly to the deployment root.
+Only missing folders use recursive creation. The original action traversed every
+ancestor for every folder; the observed server connection closed after about
+15 minutes of that preparation, before any STOR commands.
+
+The patch verifies the original method's SHA-256 before editing it and runs mocked
+tests for existing/missing folders, connection errors, and dry runs. TLS validation,
+exclusions, file synchronization and deletion behavior remain upstream behavior.
+The job allows up to three hours for the initial full upload. This does not change
+the hosting server's own connection limits or guarantee a successful transfer.
