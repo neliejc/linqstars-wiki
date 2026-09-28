@@ -87,5 +87,9 @@ ancestor for every folder; the observed server connection closed after about
 The patch verifies the original method's SHA-256 before editing it and runs mocked
 tests for existing/missing folders, connection errors, and dry runs. TLS validation,
 exclusions, file synchronization and deletion behavior remain upstream behavior.
-The job allows up to three hours for the initial full upload. This does not change
+The job allows up to six hours for the initial full upload. The first attempt
+completed 16,162 file transfers before reaching the former three-hour limit.
+The sync manifest is written only after completion, so an interrupted initial
+deployment will repeat uploads on the next run. Once the initial sync completes,
+subsequent deployments transfer changes only. This does not change
 the hosting server's own connection limits or guarantee a successful transfer.

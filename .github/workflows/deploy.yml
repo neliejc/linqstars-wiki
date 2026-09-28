@@ -22,7 +22,8 @@ jobs:
     # Enable after the destination and first deployment have been checked.
     if: github.ref == 'refs/heads/main' && (vars.DEPLOY_ENABLED == 'true' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    # Initial sync has over 22,000 files; measured FTPS latency needs ~4 hours.
+    timeout-minutes: 360
     steps:
       - uses: actions/checkout@v6
         with:
