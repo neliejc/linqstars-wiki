@@ -93,3 +93,10 @@ The sync manifest is written only after completion, so an interrupted initial
 deployment will repeat uploads on the next run. Once the initial sync completes,
 subsequent deployments transfer changes only. This does not change
 the hosting server's own connection limits or guarantee a successful transfer.
+
+The patch also checks the tracking file with SIZE before downloading it. A missing
+file therefore does not open a data connection. Connection failures during state
+retrieval trigger at most two reconnects; persistent failures and invalid state
+JSON stop deployment rather than being mistaken for an empty server. Tests cover
+missing state, recovery, the retry limit, and invalid JSON. This is not mid-upload
+resumption: later transfer failures still stop the run.

@@ -71,6 +71,7 @@ jobs:
         run: |
           python3 scripts/patch-ftp-client.py .github/ftp-client/dist/index.js
           node scripts/tests/ftp-folders.cjs .github/ftp-client/dist/index.js
+          node scripts/tests/ftp-state.cjs .github/ftp-client/dist/index.js
 
       - name: Deploy through encrypted FTP
         uses: ./.github/ftp-client
