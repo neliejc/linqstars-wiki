@@ -9,7 +9,6 @@ use MediaWiki\Extension\DynamicPageList3\Heading\Heading;
 use MediaWiki\Extension\DynamicPageList3\Lister\Lister;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
-use MediaWiki\Parser\ParserOutputLinkTypes;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\Title\Title;
@@ -28,13 +27,6 @@ class Parse {
 	 * @var Logger
 	 */
 	private $logger = null;
-
-	/**
-	 * Array of prequoted table names.
-	 *
-	 * @var string[]
-	 */
-	private $tableNames = [];
 
 	/**
 	 * Header Output
@@ -87,7 +79,6 @@ class Parse {
 	public function __construct() {
 		$this->parameters = new Parameters();
 		$this->logger = new Logger();
-		$this->tableNames = Query::getTableNames();
 		$this->request = RequestContext::getMain()->getRequest();
 	}
 
@@ -721,8 +712,8 @@ class Parse {
 
 		$totalCategories = 0;
 		if ( is_array( $this->parameters->getParameter( 'category' ) ) ) {
-			foreach ( $this->parameters->getParameter( 'category' ) as $comparisonType => $operatorTypes ) {
-				foreach ( $operatorTypes as $operatorType => $categoryGroups ) {
+			foreach ( $this->parameters->getParameter( 'category' ) as $operatorTypes ) {
+				foreach ( $operatorTypes as $categoryGroups ) {
 					foreach ( $categoryGroups as $categories ) {
 						if ( is_array( $categories ) ) {
 							$totalCategories += count( $categories );
@@ -733,8 +724,8 @@ class Parse {
 		}
 
 		if ( is_array( $this->parameters->getParameter( 'notcategory' ) ) ) {
-			foreach ( $this->parameters->getParameter( 'notcategory' ) as $comparisonType => $operatorTypes ) {
-				foreach ( $operatorTypes as $operatorType => $categories ) {
+			foreach ( $this->parameters->getParameter( 'notcategory' ) as $operatorTypes ) {
+				foreach ( $operatorTypes as $categories ) {
 					if ( is_array( $categories ) ) {
 						$totalCategories += count( $categories );
 					}
@@ -1105,7 +1096,7 @@ class Parse {
 				// statement itself uses one of these links they will be thrown away!
 				Hooks::$createdLinks[0] = [];
 
-				foreach ( $parserOutput->getLinkList( ParserOutputLinkTypes::LOCAL ) as $nsp => $link ) {
+				foreach ( $parserOutput->mLinks as $nsp => $link ) {
 					Hooks::$createdLinks[0][$nsp] = $link;
 				}
 			}
@@ -1113,7 +1104,7 @@ class Parse {
 			if ( $parserOutput && isset( $eliminate['templates'] ) && $eliminate['templates'] ) {
 				Hooks::$createdLinks[1] = [];
 
-				foreach ( $parserOutput->getLinkList( ParserOutputLinkTypes::TEMPLATE ) as $nsp => $tpl ) {
+				foreach ( $parserOutput->mTemplates as $nsp => $tpl ) {
 					Hooks::$createdLinks[1][$nsp] = $tpl;
 				}
 			}
@@ -1177,8 +1168,7 @@ class Parse {
 		asort( $sortKeys );
 
 		$sortedArticles = [];
-
-		foreach ( $sortKeys as $oldKey => $newKey ) {
+		foreach ( $sortKeys as $oldKey => $_ ) {
 			$sortedArticles[] = $articles[$oldKey];
 		}
 

@@ -6,7 +6,6 @@ use MediaWiki\Extension\DynamicPageList3\Maintenance\CreateTemplate;
 use MediaWiki\Extension\DynamicPageList3\Maintenance\CreateView;
 use MediaWiki\Installer\DatabaseUpdater;
 use MediaWiki\Parser\Parser;
-use MediaWiki\Parser\ParserOutputLinkTypes;
 use MediaWiki\Parser\PPFrame;
 use MediaWiki\Registration\ExtensionRegistry;
 
@@ -200,7 +199,7 @@ class Hooks {
 	 * The callback function wrapper for converting the input text to HTML output
 	 *
 	 * @param string $input
-	 * @param array $args
+	 * @param array $args @phan-unused-param
 	 * @param Parser $parser
 	 * @param PPFrame $frame
 	 * @return string
@@ -219,7 +218,7 @@ class Hooks {
 
 		// we can remove the templates by save/restore
 		if ( $reset['templates'] ?? false ) {
-			$saveTemplates = $parserOutput->getLinkList( ParserOutputLinkTypes::TEMPLATE );
+			$saveTemplates = $parserOutput->mTemplates;
 		}
 
 		// we can remove the categories by save/restore
@@ -235,7 +234,7 @@ class Hooks {
 
 		// we can remove the images by save/restore
 		if ( $reset['images'] ?? false ) {
-			$saveImages = $parserOutput->getLinkList( ParserOutputLinkTypes::MEDIA );
+			$saveImages = $parserOutput->mImages;
 		}
 
 		$parsedDPL = $parser->recursiveTagParse( $text );
@@ -309,7 +308,7 @@ class Hooks {
 		$parser->addTrackingCategory( 'dplnum-parserfunc-tracking-category' );
 
 		$num = str_replace( '&#160;', ' ', $text );
-		$num = str_replace( '&nbsp;', ' ', $text );
+		$num = str_replace( '&nbsp;', ' ', $num );
 		$num = preg_replace( '/([0-9])([.])([0-9][0-9]?[^0-9,])/', '\1,\3', $num );
 		$num = preg_replace( '/([0-9.]+),([0-9][0-9][0-9])\s*Mrd/', '\1\2 000000 ', $num );
 		$num = preg_replace( '/([0-9.]+),([0-9][0-9])\s*Mrd/', '\1\2 0000000 ', $num );
@@ -421,7 +420,7 @@ class Hooks {
 	) {
 		$parser->addTrackingCategory( 'dplchapter-parserfunc-tracking-category' );
 		$output = LST::extractHeadingFromText(
-			$parser, $page, '?title?', $text, $heading, '',
+			$parser, $page, $text, $heading, '',
 			$sectionHeading, true, $maxLength, $link, $trim
 		);
 		return $output[0];
@@ -515,8 +514,7 @@ class Hooks {
 
 			foreach ( $targets as $to => $toName ) {
 				$targets[$to] = "[[$to|$toName]]";
-
-				foreach ( $sources as $from => $fromName ) {
+				foreach ( $sources as $from => $_ ) {
 					if ( array_key_exists( $to, $m[$from] ) ) {
 						$targets[$to] .= "\n|$yes";
 					} else {
@@ -535,8 +533,7 @@ class Hooks {
 
 			foreach ( $sources as $from => $fromName ) {
 				$sources[$from] = "[[$from|$fromName]]";
-
-				foreach ( $targets as $to => $toName ) {
+				foreach ( $targets as $to => $_ ) {
 					if ( array_key_exists( $to, $m[$from] ) ) {
 						$sources[$from] .= "\n|$yes";
 					} else {
@@ -582,7 +579,7 @@ class Hooks {
 	 * Reset everything; some categories may have been fixed, however via fixcategory=
 	 *
 	 * @param Parser $parser
-	 * @param string $text
+	 * @param string $text @phan-unused-param
 	 */
 	public static function endReset( $parser, $text ) {
 		if ( !self::$createdLinks['resetdone'] ) {
@@ -622,8 +619,8 @@ class Hooks {
 		// called during the final output phase; removes links created by DPL
 		if ( self::$createdLinks ) {
 			if ( array_key_exists( 0, self::$createdLinks ) ) {
-				$parserLinks = $parser->getOutput()->getLinkList( ParserOutputLinkTypes::LOCAL );
-				foreach ( $parserLinks as $nsp => $link ) {
+				$parserLinks = $parser->getOutput()->mLinks;
+				foreach ( $parserLinks as $nsp => $_ ) {
 					if ( !array_key_exists( $nsp, self::$createdLinks[0] ) ) {
 						continue;
 					}
@@ -640,8 +637,8 @@ class Hooks {
 			}
 
 			if ( array_key_exists( 1, self::$createdLinks ) ) {
-				$parserTemplates = $parser->getOutput()->getLinkList( ParserOutputLinkTypes::TEMPLATE );
-				foreach ( $parserTemplates as $nsp => $tpl ) {
+				$parserTemplates = $parser->getOutput()->mTemplates;
+				foreach ( $parserTemplates as $nsp => $_ ) {
 					if ( !array_key_exists( $nsp, self::$createdLinks[1] ) ) {
 						continue;
 					}
@@ -670,8 +667,8 @@ class Hooks {
 			}
 
 			if ( array_key_exists( 3, self::$createdLinks ) ) {
-				$parserMedia = $parser->getOutput()->getLinkList( ParserOutputLinkTypes::MEDIA );
-				$parser->getOutput()->mImages = array_diff_assoc( $parserMedia, self::$createdLinks[3] );
+				$parser->getOutput()->mImages = array_diff_assoc(
+					$parser->getOutput()->mImages, self::$createdLinks[3] );
 			}
 		}
 	}
