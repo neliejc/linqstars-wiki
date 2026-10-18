@@ -210,5 +210,6 @@ $wgDrawioEditorImageType = 'svg';
 wfLoadExtension( 'PageApprovals' );
 
 wfLoadExtension( 'InputBox' );
+wfLoadExtension( 'DynamicPageList3' );
 
 wfLoadExtension( 'Widgets' );

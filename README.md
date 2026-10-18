@@ -42,8 +42,8 @@ If another Google API is needed later, add its service to the Composer allowlist
 and reinstall `google/apiclient-services` to restore the missing wrappers.
 
 Extensions retained from the current configuration: BlueSpiceFoundation,
-DrawioEditor, GoogleLogin, InputBox, OOJSPlus, PageApprovals, VisualEditor, Widgets,
-and WikiEditor. Their declared extension dependencies are included.
+DrawioEditor, DynamicPageList3, GoogleLogin, InputBox, OOJSPlus, PageApprovals,
+VisualEditor, Widgets, and WikiEditor. Their declared extension dependencies are included.
 Inactive extensions removed: CiteThisPage, CodeEditor, Echo, ImageMap, Linter,
 MultimediaViewer, NativeSvgHandler, Nuke, OATHAuth, PageImages, PdfHandler,
 ReplaceText, SecureLinkFixer, SpamBlacklist, TextExtracts, and TitleBlacklist.
